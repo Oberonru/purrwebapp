@@ -1,14 +1,16 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('users_table')
 export class UserEntity {
-    @PrimaryGeneratedColumn()
-    id: string;
+  @PrimaryGeneratedColumn()
+  id: string;
 
-    //token & tokenSecret
+  @Column({ nullable: true })
+  trelloId: string;
 
+  @Column({ nullable: true })
+  accessToken?: string;
 
-    @Column()
-    accessToken: string;
-
+  @Column({ nullable: true })
+  accessTokenSecret: string;
 }

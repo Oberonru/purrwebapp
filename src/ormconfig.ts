@@ -1,4 +1,5 @@
 import { DataSourceOptions } from 'typeorm';
+import { UserEntity } from './user/user.entity';
 
 const ormconfig: DataSourceOptions = {
   type: 'postgres',
@@ -7,7 +8,9 @@ const ormconfig: DataSourceOptions = {
   username: 'user',
   password: '123',
   database: 'test',
-  entities: [__dirname + '/**/*.entity.ts{.ts, .js}'],
+  //Users/alexey/dev/Nestjs/src/user/user.entity.ts ---path
+  //entities: [__dirname + '*/**/*.entity{.ts, .js}'],
+  entities: [UserEntity],
   synchronize: true,
 };
 

@@ -20,10 +20,11 @@ export class AuthController {
     );
   }
 
-  async callback(@Query('oauth_token') token: string, @Query('oauth_verifier') verifier: string) {
-        return await this.authService.callback(token, verifier);
+  @Get('callback')
+  async callback(
+    @Query('oauth_token') token: string,
+    @Query('oauth_verifier') verifier: string,
+  ) {
+    return await this.authService.callback(token, verifier);
   }
 }
-
-
-
