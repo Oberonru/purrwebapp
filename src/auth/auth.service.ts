@@ -3,15 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { AuthDto } from './dto/authDto';
-import * as jwtToken from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import config from 'src/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(dto: AuthDto) {
@@ -27,7 +28,10 @@ export class AuthService {
 
       this.userRepository.save(userEntity);
 
-      return jwtToken.sign({ userId: userEntity.id }, process.env.JWT_SECRET);
+      return this.jwtService.signAsync(
+        { userId: userEntity.id },
+        { secret: config.jwtSecret },
+      );
     }
 
     return 'user is exist';
@@ -41,7 +45,10 @@ export class AuthService {
     const isEquals = await bcrypt.compare(dto.password, user.password);
 
     if (user && isEquals) {
-      return await jwtToken.sign({ userId: user.id }, process.env.JWT_SECRET);
+      return this.jwtService.signAsync(
+        { userId: user.id },
+        { secret: config.jwtSecret },
+      );
     }
 
     throw new UnauthorizedException();

@@ -1,10 +1,17 @@
-import { Entity, PrimaryGeneratedColumn, Column, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BeforeInsert,
+  OneToMany,
+} from 'typeorm';
+import { ColumnEntity } from 'src/column/column.entity';
 import { hash } from 'bcrypt';
 
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: string;
+  id: number;
 
   @Column({ nullable: true })
   trelloId: string;
@@ -25,4 +32,7 @@ export class UserEntity {
 
   @Column({ nullable: true })
   accessTokenSecret: string;
+
+  @OneToMany(() => ColumnEntity, (column) => column.user)
+  columns: ColumnEntity[];
 }
